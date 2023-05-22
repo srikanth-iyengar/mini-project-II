@@ -694,9 +694,8 @@
 </ul>
 <h2 id="building-cete">Building Cete<a class="headerlink" href="#building-cete" title="Permanent link"></a></h2>
 <p>When you satisfied dependencies, let's build Cete for Linux as following:</p>
-<pre><code class="language-bash">$ mkdir -p ${GOPATH}/src/github.com/mosuka
-$ cd ${GOPATH}/src/github.com/mosuka
-$ git clone https://github.com/mosuka/cete.git
+<pre><code class="language-bash">$ cd ${GOPATH}/src/github.com/srikanth-iyengar
+$ git clone https://github.com/srikanth-iyengar/mini-project-II.git
 $ cd cete
 $ make build
 </code></pre>
@@ -978,12 +977,12 @@ $ ./bin/cete get 1 --grpc-address=:9002
 </code></pre>
 <h3 id="pulling-cete-docker-container-image-from-dockerio">Pulling Cete Docker container image from docker.io<a class="headerlink" href="#pulling-cete-docker-container-image-from-dockerio" title="Permanent link"></a></h3>
 <p>You can also use the Docker container image already registered in docker.io like so:</p>
-<pre><code class="language-bash">$ docker pull mosuka/cete:latest
+<pre><code class="language-bash">$ docker pull srikanth-iyengar/cete:latest
 </code></pre>
-<p>See https://hub.docker.com/r/mosuka/cete/tags/</p>
+<p>See https://hub.docker.com/r/srikanth-iyengar/cete/tags/</p>
 <h3 id="pulling-cete-docker-container-image-from-dockerio_1">Pulling Cete Docker container image from docker.io<a class="headerlink" href="#pulling-cete-docker-container-image-from-dockerio_1" title="Permanent link"></a></h3>
 <p>You can also use the Docker container image already registered in docker.io like so:</p>
-<pre><code class="language-bash">$ docker pull mosuka/cete:latest
+<pre><code class="language-bash">$ docker pull srikanth-iyengar/cete:latest
 </code></pre>
 <h3 id="running-cete-node-on-docker">Running Cete node on Docker<a class="headerlink" href="#running-cete-node-on-docker" title="Permanent link"></a></h3>
 <p>Running a Cete data node on Docker. Start Cete node like so:</p>
@@ -991,7 +990,7 @@ $ ./bin/cete get 1 --grpc-address=:9002
     -p 7000:7000 \
     -p 8000:8000 \
     -p 9000:9000 \
-    mosuka/cete:latest cete start \
+    srikanth-iyengar/cete:latest cete start \
       --id=node1 \
       --raft-address=:7000 \
       --grpc-address=:9000 \
