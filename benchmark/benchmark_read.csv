@@ -1,0 +1,5 @@
+Key, NUMBER OF RECORDS
+Database,1_000,10_000,100_000,1_000_000
+Redis (v3.0.7)	,9,14,14,30
+MiniProject (v0.1)	,8,6,8,8
+PostgreSQL (v13.3),29.6,304,2_888,31_230

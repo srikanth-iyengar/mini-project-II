@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+package kvs;
+
+option go_package = "github.com/mosuka/cete/protobuf";
+
+service KVS {
+    rpc LivenessCheck (google.protobuf.Empty) returns (LivenessCheckResponse) {
+        option (google.api.http) = {
+            get: "/v1/liveness_check"
+        };
+    }
+
+    rpc ReadinessCheck (google.protobuf.Empty) returns (ReadinessCheckResponse) {
+        option (google.api.http) = {
+            get: "/v1/readiness_check"
+        };
+    }
+
+    rpc Node (google.protobuf.Empty) returns (NodeResponse) {
+        option (google.api.http) = {
+            get: "/v1/node"
+        };
+    }
+    rpc Join (JoinRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/cluster/{id}"
+            body: "node"
+        };
+    }
+    rpc Cluster (google.protobuf.Empty) returns (ClusterResponse) {
+        option (google.api.http) = {
+            get: "/v1/cluster"
+        };
+    }
+    rpc Leave (LeaveRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/v1/cluster/{id}"
+        };
+    }
+
+    rpc Snapshot (google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            get: "/v1/snapshot"
+        };
+    }
+
+    rpc Get (GetRequest) returns (GetResponse) {
+        option (google.api.http) = {
+            get: "/v1/data/{key=**}"
+        };
+    }
+
+    rpc Scan (ScanRequest) returns (ScanResponse) {
+        option (google.api.http) = {
+            get: "/v1/data/{prefix=**}"
+        };
+    }
+
+    rpc Set (SetRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/data/{key=**}"
+            body: "*"
+        };
+    }
+
+    rpc Delete (DeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/v1/data/{key=**}"
+        };
+    }
+
+    rpc Watch (google.protobuf.Empty) returns (stream WatchResponse) {}
+
+    rpc Metrics (google.protobuf.Empty) returns (MetricsResponse) {
+        option (google.api.http) = {
+            get: "/v1/metrics"
+        };
+    }
+}
+
+message LivenessCheckResponse {
+    bool alive = 1;
+}
+
+message ReadinessCheckResponse {
+    bool ready = 1;
+}
+
+message Metadata {
+    string grpc_address = 1;
+    string http_address = 2;
+}
+
+message Node {
+    string raft_address = 1;
+    Metadata metadata = 2;
+    string state = 3;
+}
+
+message Cluster {
+    map<string, Node> nodes = 1;
+    string leader = 2;
+}
+
+message JoinRequest {
+    string id = 1;
+    Node node = 2;
+}
+
+message LeaveRequest {
+    string id = 1;
+}
+
+message NodeResponse {
+    Node node = 1;
+}
+
+message ClusterResponse {
+    Cluster cluster = 1;
+}
+
+message GetRequest {
+    string key = 1;
+}
+
+message GetResponse {
+    bytes value = 1;
+}
+
+message ScanRequest {
+    string prefix = 1;
+}
+
+message ScanResponse {
+    repeated bytes values = 1;
+}
+
+message SetRequest {
+    string key = 1;
+    bytes value = 2;
+}
+
+message DeleteRequest {
+    string key = 1;
+}
+
+message SetMetadataRequest {
+    string id = 1;
+    Metadata metadata = 2;
+}
+
+message DeleteMetadataRequest {
+    string id = 1;
+}
+
+message Event {
+    enum Type {
+        Unknown = 0;
+        Join = 1;
+        Leave = 2;
+        Set = 3;
+        Delete = 4;
+    }
+    Type type = 1;
+    google.protobuf.Any data = 2;
+}
+
+message WatchResponse {
+    Event event = 1;
+}
+
+message MetricsResponse {
+    bytes metrics = 1;
+}
+
+message KeyValuePair {
+    string key = 1;
+    bytes value = 2;
+}
